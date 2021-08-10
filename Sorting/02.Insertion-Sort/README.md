@@ -1,15 +1,3 @@
-# 目录说明
-
-SortTestHelper.h  部分测试会用到的函数
-
-main.cpp  主函数
-
-SelectionSort.h  选择排序算法
-
-InsertionSort.h  插入排序算法
-
-
-
 # 插入排序
 
 ## 一、概念及其介绍
@@ -25,9 +13,23 @@ InsertionSort.h  插入排序算法
 
 插入排序中，当待排序数组是有序时，是最优的情况，只需当前数跟前一个数比较一下就可以了，这时一共需要比较 **N-1** 次，时间复杂度为 **O(N)**。最坏的情况是待排序数组是逆序的，此时需要比较次数最多，最坏的情况是 **O(n^2)**。
 
+因此插入排序最大的**优点**就是数据有序的情况下，可以提前终止部分内层循环
+
 
 
 ## 三、过程图示
 
 ![插入排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/InsertionSort-image.png)
+
+
+
+## 四、实例代码
+
+SortTestHelper.h  部分测试会用到的函数
+
+main.cpp  主函数
+
+SelectionSort.h  选择排序算法
+
+InsertionSort.h  插入排序算法
 
