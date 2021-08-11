@@ -13,7 +13,7 @@
 
 ## 三、过程图示
 
-![选择排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/SelectionSort.gif)
+![选择排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/selectionSort.gif)
 
 ## 四、实例代码
 
