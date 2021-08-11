@@ -16,9 +16,6 @@ void test01()
 	int* arr2 = SortTestHelper::copyIntArray(arr1, n);
 	int* arr3 = SortTestHelper::copyIntArray(arr1, n);
 
-	//InsertionSort(arr1, n);
-	//SortTestHelper::printArray(arr1, n);
-	
 	SortTestHelper::testSort("InsertionSort", InsertionSort, arr1, n);   //0.056s
 	SortTestHelper::testSort("SelectionSort", SelectionSort, arr2, n);   //0.098s
 	SortTestHelper::testSort("BubbleSort", BubbleSort, arr3, n);         //1.667s
