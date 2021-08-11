@@ -72,3 +72,30 @@ void BubbleSort(T *arr,int n)
 
 不过，这种改进并不很显著，因为在最坏情况下，改进过的冒泡排序过程跟未改进过的差不多。
 
+
+
+### 改进二：暂时没看
+
+来源：https://github.com/liuyubobobo/Play-with-Algorithms/blob/master/02-Sorting-Basic/Course%20Code%20(C%2B%2B)/Optional-02-Bubble-Sort/main.cpp
+
+```c++
+// 我们的第二版bubbleSort,使用newn进行优化
+template<typename T>
+void bubbleSort2( T arr[] , int n){
+
+    int newn; // 使用newn进行优化
+
+    do{
+        newn = 0;
+        for( int i = 1 ; i < n ; i ++ )
+            if( arr[i-1] > arr[i] ){
+                swap( arr[i-1] , arr[i] );
+
+                // 记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑
+                newn = i;
+            }
+        n = newn;
+    }while(newn > 0);
+}
+```
+
