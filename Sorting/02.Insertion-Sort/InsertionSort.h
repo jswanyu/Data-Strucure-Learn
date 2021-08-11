@@ -33,7 +33,6 @@ void InsertionSort_Basic(T arr[], int n)
 template <typename T>
 void InsertionSort_Advance(T* arr, int n)
 {
-	//[5,2,3,1] [2,3,5,1] e=3 2551  9 8 7 6  8 9 7 6  8 9 9 6 8 8 9 6 78 9 6
 	for (int i = 1; i < n; i++)
 	{
 		T e = arr[i];  //复制一份外层循环当前轮次的元素
