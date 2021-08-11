@@ -55,3 +55,20 @@ main.cpp  主函数
 
 ## 五、改进
 
+### 改进一：添加标志位，如果某次没有发生交换，则停止排序
+
+```c++
+template<typename T>
+void BubbleSort(T *arr,int n)
+{
+    bool again = true;
+	for (int i = 0; i < n - 1 && again; i++)                  //外层循环中只有标志位为真，才进行下一次排序
+		for (int j = 0, again = false; j < n - 1 - i; j++)    //每次的内层循环将标志位设为假
+			if (arr[j] > arr[j + 1])
+				swap(arr[j], arr[j + 1]);
+    			again = true;                                 //发生交换就将标志位设为真
+}
+```
+
+不过，这种改进并不很显著，因为在最坏情况下，改进过的冒泡排序过程跟未改进过的差不多。
+
