@@ -31,6 +31,8 @@
 
 归并排序适用于数据量大，并且对稳定性有要求的场景
 
+
+
 ## 三、过程图示
 
 ![插入排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/mergeSort.gif)
