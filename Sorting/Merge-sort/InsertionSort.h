@@ -20,7 +20,7 @@ void InsertionSort(T* arr, int n)
 	}
 }
 
-// 对arr[l...r]范围的数组进行插入排序
+// 对arr[l...r]范围的数组进行插入排序，要注意外层循环里是<=r
 template <typename T>
 void InsertionSort(T* arr, int l, int r)
 {
