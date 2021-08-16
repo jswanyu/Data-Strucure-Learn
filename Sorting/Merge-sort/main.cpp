@@ -18,7 +18,7 @@ void test01()
 	
 	SortTestHelper::testSort("InsertionSort", InsertionSort, arr1, n);   //1.304s
 	SortTestHelper::testSort("MergeSort", MergeSort, arr2, n);           //0.02s
-	SortTestHelper::testSort("MergeSort2", MergeSort2, arr3, n);       //0.007s
+	SortTestHelper::testSort("MergeSort2", MergeSort2, arr3, n);         //0.007s
 
 	
 	delete[] arr1;
@@ -41,7 +41,7 @@ void test02()
 
 	SortTestHelper::testSort("InsertionSort", InsertionSort, arr1, n);   //0.021s
 	SortTestHelper::testSort("MergeSort", MergeSort, arr2, n);           //0.021s
-	SortTestHelper::testSort("MergeSort2", MergeSort2, arr3, n);       //0.003s
+	SortTestHelper::testSort("MergeSort2", MergeSort2, arr3, n);         //0.003s
 
 	
 	delete[] arr1;
