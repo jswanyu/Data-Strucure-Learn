@@ -81,7 +81,7 @@ namespace SortTestHelper {
 
 		assert(isSorted(arr, n));  //确保排序成功，否则中断
 
-		cout << sortName << ":" << double(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
+		cout << sortName << "：" << double(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 		//endTime - startTime返回的是运行了几个时钟周期
 		//CLOCKS_PER_SEC代表每秒钟有几个时钟周期，相除得到运行了多少秒
 

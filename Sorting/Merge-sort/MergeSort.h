@@ -11,8 +11,11 @@ using namespace std;
 template<typename T>
 void __Merge(T arr[], int l, int mid, int r)
 {
-	//vs不支持动态长度数组，即不能使用T aux[r-l+1]的方式来申请aux的空间
-	T *aux = new T[r - l + 1];    //开辟复制数组空间
+    // vs不支持动态长度数组，即不能使用T aux[r-l+1]的方式来申请aux的空间
+    // 要使用new的方式申请aux空间，在__merge函数的最后, delete掉申请的空间
+    // T *aux = new T[r - l + 1];
+
+    T aux[r-l+1];                 //开辟复制数组空间
 	
 	for (int i = l; i <= r; i++)  //复制数组
 		aux[i - l] = arr[i];      //赋值的时候有一个l的偏移量
@@ -43,7 +46,7 @@ void __Merge(T arr[], int l, int mid, int r)
 			j++;                                      //后续同理
 		}
 	}
-	delete[] aux;
+	//delete[] aux;
 }
 
 
@@ -55,62 +58,31 @@ template<typename T>
 void __MergeSort(T* arr, int l, int r)
 {
 	//如果l>=r，那么显然待排序元素只有0或1个，那么直接返回去即可
-	if (l >= r)
-		return;
+    //	if (l >= r)
+    //		return;
+
+    // 优化1: 对于小规模数组, 使用插入排序，避免递归到底
+    if(r-l <= 15)
+    {
+        InsertionSort(arr, l, r);  //需要将之前[0,n]数组的插入排序改写为[l,r]的
+        return;
+    }
+
 
 	int mid = (l + r) / 2;        //两个数字非常大时，会造成数据的溢出问题
 	__MergeSort(arr,l,mid);     //左半区递归排序
 	__MergeSort(arr,mid+1,r);   //右半区递归排序 
-	__Merge(arr,l,mid,r);         //核心排序函数
+	//__Merge(arr,l,mid,r);         //核心排序函数
+
+	// 优化2: 对于arr[mid] <= arr[mid+1]的情况,不进行merge
+	// 因为归并过程保证了l~mid是有序的，mid+1~r也是有序的，arr[mid] <= arr[mid+1]，则不用排序
+	// 对于近乎有序的数组非常有效,但是对于一般情况,有一定的性能损失
+	if (arr[mid] > arr[mid + 1])
+	    __Merge(arr, l, mid, r);
 }
 
 
 template<typename T>
 void MergeSort(T arr[], int n) {
 	__MergeSort(arr, 0, n - 1);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//归并排序的优化
-template<typename T>
-void __MergeSort2(T arr[], int l, int r)
-{
-
-	// 优化2: 对于小规模数组, 使用插入排序，避免递归到底
-	if(r-l <= 15)
-	{
-		InsertionSort(arr, l, r);
-		return;
-	}
-
-	int mid = (l + r) / 2;
-	__MergeSort2(arr, l, mid);
-	__MergeSort2(arr, mid+1, r);
-
-	// 优化1: 对于arr[mid] <= arr[mid+1]的情况,不进行merge
-   // 因为归并过程保证了l~mid是有序的，mid+1~r也是有序的，arr[mid] <= arr[mid+1]，则不用排序
-   // 对于近乎有序的数组非常有效,但是对于一般情况,有一定的性能损失
-	if (arr[mid] > arr[mid + 1])
-		__Merge(arr, l, mid, r);
-}
-
-
-template<typename T>
-void MergeSort2(T arr[], int n) {
-	__MergeSort2(arr, 0, n - 1);
 }
