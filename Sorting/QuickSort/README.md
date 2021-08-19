@@ -41,7 +41,21 @@
 ## 四、实例代码
 
 ```c++
+template<typename T>
+void __QuickSort(T *arr, int l, int r) {
+    if (l >= r)
+        return;
 
+
+    int p = __partition(arr, l, r);  //返回索引值
+    __QuickSort(arr, l, p - 1);
+    __QuickSort(arr, p + 1, r);
+}
+
+template<typename T>
+void QuickSort(T *arr, int n) {
+    __QuickSort(arr, 0, n - 1);
+}
 ```
 
 
