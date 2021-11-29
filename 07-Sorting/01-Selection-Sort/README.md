@@ -20,11 +20,9 @@
 
 
 
-
-
 ## 三、过程图示
 
-![选择排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/selectionSort.gif)
+[![5TL4C4.gif](https://z3.ax1x.com/2021/10/27/5TL4C4.gif)](https://imgtu.com/i/5TL4C4)
 
 
 
@@ -48,15 +46,7 @@ void SelectionSort(T arr[], int n)
 
 
 
-文件结构：
 
-SelectionSort.h  选择排序算法
-
-SortTestHelper.h  测试相关函数
-
-Student.h  自定义类
-
-main.cpp  主函数
 
 
 
