@@ -28,19 +28,25 @@
 
 ## 四、实例代码
 
-```c++
-template<typename T>
-void SelectionSort(T arr[], int n)
-{
-	for (int i = 0; i < n; i++) {
-		
-		//寻找[i,n)区间里的最小值
-		int minIndex = i;  //最小值的索引为i
-		for (int j = i + 1; j < n; j++)  //从i的下一个数开始
-			if (arr[j] < arr[minIndex])  //如果找到一个比第i个数小的数，就把他所在的索引记为当前轮次的最小值
-				minIndex = j; 
-		swap(arr[i], arr[minIndex]);     //将最小值交换到第i个数处
-	}
+```java
+public class SelectionSort {
+    public static <E extends Comparable<E>> void sort(E[] arr){
+        for (int i = 0; i < arr.length; i++) {
+            //寻找[i,n)区间里的最小值
+            int minIndex = i;    //最小值的索引为i
+            for (int j = i+1; j < arr.length; j++)   //从i的下一个数开始
+                //如果找到一个比第i个数小的数，就把他所在的索引记为当前轮次的最小值
+                if (arr[j].compareTo(arr[minIndex])<0) 
+                    minIndex = j;
+            swap(arr,i,minIndex);  //将最小值交换到第i个数处
+        }
+    }
+
+    private static <E> void swap(E[] arr,int i,int j){
+        E t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+    }
 }
 ```
 
@@ -56,55 +62,70 @@ void SelectionSort(T arr[], int n)
 
 这里有一个问题就最后一步交换过程总会发生，如果元素的位置本身就是合理的，其实没必要交换，会带来3次冗余移动，可以加一个条件语句，再判定是否要交换
 
-```c++
-template<typename T>
-void SelectionSort(T arr[], int n){
-	for (int i = 0; i < n; i++) {
-		int minIndex = i; 
-		for (int j = i + 1; j < n; j++)  
-			if (arr[j] < arr[minIndex])  
-				minIndex = j; 
-		if(i!=minIndex)  //比较索引即可，无需比较具体数据
-        	swap(arr[i], arr[minIndex]);    
-	}
+```java
+public class SelectionSort {
+    public static <E extends Comparable<E>> void sort(E[] arr){
+        for (int i = 0; i < arr.length; i++) {
+            int minIndex = i;   
+            for (int j = i+1; j < arr.length; j++)   
+                if (arr[j].compareTo(arr[minIndex])<0) 
+                    minIndex = j;
+            if(i != minIndex)//比较索引即可，无需比较具体数据
+            	swap(arr,i,minIndex);  
+        }
+    }
+
+    private static <E> void swap(E[] arr,int i,int j){
+        E t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+    }
 }
 ```
 
-上述改进将在程序中引入新的条件以增加n-1次索引比较，这样的改善是否有必要呢?这取决于排序元素的类型，如果元素是**数字或字符**，那么引入新的条件来避免冗余交换，其实效率并没有提高多少;如果data中的元素是大的**复合实体，如数组或结构**，那么一次交换(需要3次赋值)可能需要花费相当于100次索引比较的时间，因此建议使用有条件的swap操作。
+上述改进将在程序中引入新的条件以增加n-1次比较，这样的改善是否有必要呢?这取决于排序元素的类型，如果元素是**数字或字符**，那么引入新的条件来避免冗余交换，其实效率并没有提高多少；如果data中的元素是大的**复合实体，如数组或结构**，那么一次交换(需要3次赋值)可能需要花费相当于100次索引比较的时间，因此建议使用有条件的swap操作。
 
 
 
-### 改进二：每一轮中可以同时找到当前未处理元素的最大值和最小值
+### 改进二：双指针法--每一轮中可以同时找到当前未处理元素的最大值和最小值
 
-来源：https://github.com/liuyubobobo/Play-with-Algorithms/blob/master/02-Sorting-Basic/Course%20Code%20(C%2B%2B)/Optional-01-Optimized-Selection-Sort/main.cpp
+来源：https://github.com/liuyubobobo/Play-with-Algorithms/blob/master/02-Sorting-Basic/Course%20Code%20(Java)/Optional-01-Optimized-Selection-Sort/src/bobo/algo/SelectionSort2.java
 
 ```c++
-template<typename T>
-void selectionSort(T arr[], int n){
+// 在每一轮中, 可以同时找到当前未处理元素的最大值和最小值
+public class SelectionSort2 {
+    private SelectionSort2(){}
 
-    int left = 0, right = n - 1;
-    while(left < right){
-        int minIndex = left;
-        int maxIndex = right;
+    public static void sort(Comparable[] arr){
+        //左右指针
+        int left = 0, right = arr.length - 1;
+        while(left < right){
+            int minIndex = left;
+            int maxIndex = right;
 
-        // 在每一轮查找时, 要保证arr[minIndex] <= arr[maxIndex]
-        if(arr[minIndex] > arr[maxIndex])
-            swap(arr[minIndex], arr[maxIndex]);
+            // 在每一轮查找时, 要保证arr[minIndex] <= arr[maxIndex]
+            if(arr[minIndex].compareTo(arr[maxIndex]) > 0)
+                swap(arr, minIndex, maxIndex);
 
-        for(int i = left + 1 ; i < right; i ++)
-            if(arr[i] < arr[minIndex])
-                minIndex = i;
-            else if(arr[i] > arr[maxIndex])
-                maxIndex = i;
+            for(int i = left + 1 ; i < right; i ++)
+                if(arr[i].compareTo(arr[minIndex]) < 0)
+                    minIndex = i;
+                else if(arr[i].compareTo(arr[maxIndex]) > 0)
+                    maxIndex = i;
 
-        swap(arr[left], arr[minIndex]);
-        swap(arr[right], arr[maxIndex]);
+            swap(arr, left, minIndex);
+            swap(arr, right, maxIndex);
 
-        left ++;
-        right --;
+            left ++;
+            right --;
+        }
     }
-    
-    return;
+
+    private static void swap(Object[] arr, int i, int j) {
+        Object t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+    }
 }
 ```
 

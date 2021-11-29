@@ -29,45 +29,45 @@
 
 ## 三、过程图示
 
-![插入排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/insertionSort.gif)
+[![5TLf5F.gif](https://z3.ax1x.com/2021/10/27/5TLf5F.gif)](https://imgtu.com/i/5TLf5F)
 
 
 
 ## 四、实例代码
 
-```c++
-template <typename T>
-void InsertionSort_Advance(T* arr, int n)
-{
-	for (int i = 1; i < n; i++)
-	{
-		T e = arr[i];  //复制一份外层循环当前轮次的元素
-		int j;         //变量j保存元素e应该所在的位置，单独初始化是因为后面要用到
-
-		//只要e前一个元素要比e大，就把前一个元素向后移，反之,退出for循环，找到了e合适的位置j
-		//arr[j-1]比e小的话就不执行，进行下一轮外层循环，一旦比e大，后移，继续比e大，继续后移
-		for (j = i; j > 0 && arr[j - 1] > e; j--)  
-			arr[j] = arr[j - 1];         
-		arr[j] = e;    
-	}
+```java
+public class InsertionSort {
+    public static <E extends Comparable<E>> void sort(E[] arr){
+        for (int i = 0; i < arr.length; i++) {
+            E t = arr[i];  //复制一份外层循环当前轮次的元素
+            int j;         //变量j保存元素e应该所在的位置，单独初始化是因为for循环后面还要用到
+            // 务必注意是当前轮次的值arr[i]即t与arr[j-1]比较，而不是arr[j]
+            for (j = i; j-1 >=0 && t.compareTo(arr[j-1])<0; j--)
+                arr[j] = arr[j-1]; //比前一个元素大，那就让前一个元素后移，不用让arr[j]与arr[j-1]一直交换
+            arr[j] = t;    //此时j就是合适的位置，将开始的arr[i]赋给它
+        }
+    }
 }
 ```
 
 
 
-文件结构：
-
-SelectionSort.h  选择排序算法
-
-InsertionSort.h  插入排序算法
-
-SortTestHelper.h  测试函数
-
-main.cpp  主函数
-
-
-
 ## 五、改进
+
+插入排序的最初版本代码如下，其每次判定成功就swap()，相当于插了多次。在动图中即表现为红色的临时值一直在插入，再取出来，再插入。而上面的代码则是对其的小优化，减少交换次数，判定当前元素比前一个元素大，那就让前一个元素后移，不用让arr[j]与arr[j-1]一直交换，等到找到合适的插入位置，只插一次
+
+```java
+public class InsertionSort {    
+	public static <E extends Comparable<E>> void sort2(E[] arr){
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i; j-1 >= 0 && arr[j].compareTo(arr[j-1])<0; j--)
+                swap(arr,j,j-1);
+        }
+    }
+}
+```
+
+
 
 ### 二分查找法改进
 
