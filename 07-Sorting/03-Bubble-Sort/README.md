@@ -20,36 +20,29 @@
 
 ## 三、过程图示
 
-![插入排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/bubbleSort.gif)
+[![5TLz2d.gif](https://z3.ax1x.com/2021/10/27/5TLz2d.gif)](https://imgtu.com/i/5TLz2d)
 
 
 
 ## 四、实例代码
 
-```c++
-template<typename T>
-void BubbleSort(T *arr,int n)
-{
-	for (int i = 0; i < n - 1; i++) //对于n个数，每一轮比较冒出一个最大的数，最后一个数不用冒，所以要比较n-1轮
-		for (int j = 0; j < n - 1 - i; j++) //n个数中，相邻的元素就有n-1组,第0轮要比较n-1次,第i轮要比较n-1-i次
-			if (arr[j] > arr[j + 1])
-				swap(arr[j], arr[j + 1]);
+```java
+public class BubbleSort {
+    
+    public static <E extends Comparable<E>> void sort(E[] arr){
+        //对于n个数，要进行n-1轮循环，每一轮将最大的数冒到最后面去
+        for (int i = 0; i < arr.length-1; i++) {
+            //n个数中，相邻的元素就有n-1组，第0轮要比较n-1次，第i轮要比较n-1-i
+            for (int j = 0; j < arr.length-1-i; j++) {
+                if (arr[j].compareTo(arr[j+1])>0)
+                    swap(arr,j,j+1);
+            }
+        }
+    }
 }
 ```
 
 
-
-文件结构：
-
-BubbleSort.h  冒泡排序算法
-
-SelectionSort.h  选择排序算法
-
-InsertionSort.h  插入排序算法
-
-SortTestHelper.h  测试函数
-
-main.cpp  主函数
 
 
 
@@ -57,16 +50,27 @@ main.cpp  主函数
 
 ### 改进一：添加标志位，如果某次没有发生交换，则停止排序
 
+适合本身就有序的序列
+
 ```c++
-template<typename T>
-void BubbleSort(T *arr,int n)
-{
-    bool again = true;
-	for (int i = 0; i < n - 1 && again; i++)                  //外层循环中只有标志位为真，才进行下一次排序
-		for (int j = 0, again = false; j < n - 1 - i; j++)    //每次的内层循环将标志位设为假
-			if (arr[j] > arr[j + 1])
-				swap(arr[j], arr[j + 1]);
-    			again = true;                                 //发生交换就将标志位设为真
+public class BubbleSort {
+    
+    public static <E extends Comparable<E>> void sort(E[] arr){
+        //设置一个标志，如果这一趟发生了交换，则为true，否则为false。如果有一趟没有发生交换，说明排序已经完成
+        boolean flag = true;  //第一次判断时标志位为true
+        //外层循环需要flag为true
+        for (int i = 0; i < arr.length-1 && flag; i++) {
+            //每次的内层循环将标志位设为假，否则没意义
+            flag = false;
+            //内层循环会执行到底
+            for (int j = 0; j < arr.length-1-i; j++) {
+                if (arr[j].compareTo(arr[j+1])>0){
+                    swap(arr,j,j+1);
+                    flag = true;
+                }
+            }
+        }
+    }
 }
 ```
 
@@ -74,28 +78,39 @@ void BubbleSort(T *arr,int n)
 
 
 
-### 改进二：暂时没看
+### 改进二：减少内层循环比较的元素
 
-来源：https://github.com/liuyubobobo/Play-with-Algorithms/blob/master/02-Sorting-Basic/Course%20Code%20(C%2B%2B)/Optional-02-Bubble-Sort/main.cpp
+对于每次循环已经冒出去的值，可以不用去考虑它，在内层循环中记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑
 
-```c++
-// 我们的第二版bubbleSort,使用newn进行优化
-template<typename T>
-void bubbleSort2( T arr[] , int n){
+代码来源：https://github.com/liuyubobobo/Play-with-Algorithms/blob/master/02-Sorting-Basic/Course%20Code%20(Java)/Optional-02-Bubble-Sort/src/bobo/algo/BubbleSort2.java
 
-    int newn; // 使用newn进行优化
+```java
+public class BubbleSort {
+    
+public static void sort(Comparable[] arr){
 
-    do{
-        newn = 0;
-        for( int i = 1 ; i < n ; i ++ )
-            if( arr[i-1] > arr[i] ){
-                swap( arr[i-1] , arr[i] );
+        int n = arr.length;
+        int newn; // 使用newn进行优化
+		
+        //可以改成for循环
+        do{
+            newn = 0;
+            for( int i = 1 ; i < n ; i ++ )
+                if( arr[i-1].compareTo(arr[i]) > 0 ){
+                    swap( arr , i-1 , i );
 
-                // 记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑
-                newn = i;
-            }
-        n = newn;
-    }while(newn > 0);
+                    // 记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑
+                    newn = i;
+                }
+            n = newn;
+        }while(newn > 0);
+    }
+
+    private static void swap(Object[] arr, int i, int j) {
+        Object t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+    }
 }
 ```
 

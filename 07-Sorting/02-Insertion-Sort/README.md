@@ -41,7 +41,7 @@ public class InsertionSort {
         for (int i = 0; i < arr.length; i++) {
             E t = arr[i];  //复制一份外层循环当前轮次的元素
             int j;         //变量j保存元素e应该所在的位置，单独初始化是因为for循环后面还要用到
-            // 务必注意是当前轮次的值arr[i]即t与arr[j-1]比较，而不是arr[j]
+            // 务必注意是当前轮次的值arr[i]即t与arr[j-1]比较，而不是arr[j]，并且j-1是可以=0d
             for (j = i; j-1 >=0 && t.compareTo(arr[j-1])<0; j--)
                 arr[j] = arr[j-1]; //比前一个元素大，那就让前一个元素后移，不用让arr[j]与arr[j-1]一直交换
             arr[j] = t;    //此时j就是合适的位置，将开始的arr[i]赋给它
