@@ -7,7 +7,7 @@
 作为一种典型的分而治之思想的算法应用，归并排序的实现由两种方法：
 
 - 自上而下的递归（所有递归的方法都可以用迭代重写，所以就有了第 2 种方法）；
-- 自下而上的迭代；（用到再学）
+- 自下而上的迭代；（用到再说）
 
 
 
@@ -79,6 +79,7 @@ public class MergeSort {
                 arr[k] = temp[i-l]; i++;
             }
             // 再判断两个半区的大小：
+            // 注意是temp[i-l]和temp[j-l]比较，容易忘记偏移量l
             else if(temp[i-l].compareTo(temp[j-l])<=0){  // 左半部分所指元素 <= 右半部分所指元素
                 arr[k] = temp[i-l]; i++;
             }
@@ -145,4 +146,63 @@ public class MergeSort {
     }
 }
 ```
+
+
+
+### 优化三：一开始开辟数组内存，而不是在每次merge操作中开辟
+
+上面的代码中我们可以观察到合并操作merge()方法每次都开辟了一个数组用于复制，然后不用了再释放掉内存，然而merge的次数是比较多的，这无疑是一种浪费。因此可以在一开始sort时就开辟一个数组，每次递归时将这个数组传下去，用于复制数据。
+
+```java
+public class MergeSort {
+    public static <E extends Comparable<E>> void sort2(E[] arr){
+        //在一开始开辟数组空间，而不是在每次的merge中开辟空间。递归时将数组传下去
+        E[] temp = Arrays.copyOf(arr,arr.length);
+        sort2(arr,0,arr.length-1, temp);
+    }
+
+    public static <E extends Comparable<E>> void sort2(E[] arr, int l, int r, E[] temp){
+        if (r-l<=15){
+            InsertionSort.sort(arr, l, r);
+            return;
+        }
+
+        int mid = l+(r-l)/2;
+        sort2(arr,l,mid,temp);
+        sort2(arr,mid+1,r,temp);
+
+        if (arr[mid].compareTo(arr[mid+1])>0)
+            merge2(arr,l,mid,r,temp);
+    }
+
+    private static <E extends Comparable<E>> void merge2(E[] arr, int l, int mid, int r, E[] temp){
+        // 将arr中l开始的元素依次复制到temp中l开始的位置上，复制的长度为r-l+1，这样下面就没有l的偏移量了
+        System.arraycopy(arr,l,temp,l,r-l+1);
+
+        int i = l, j = mid+1;
+        for (int k = l; k <= r; k++) {
+            //先判断越界问题：
+            if (i>mid){
+                arr[k] = temp[j]; j++;
+            }
+            else if(j>r){
+                arr[k] = temp[i]; i++;
+            }
+            // 再判断两个半区的大小：
+            else if(temp[i].compareTo(temp[j])<=0){  
+                arr[k] = temp[i]; i++;
+            }
+            else{
+                arr[k] = temp[j]; j++;
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+
 
