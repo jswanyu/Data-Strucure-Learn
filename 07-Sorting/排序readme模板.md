@@ -28,17 +28,7 @@
 
 
 
-文件结构：
 
-BubbleSort.h  冒泡排序算法
-
-SelectionSort.h  选择排序算法
-
-InsertionSort.h  插入排序算法
-
-SortTestHelper.h  测试函数
-
-main.cpp  主函数
 
 
 

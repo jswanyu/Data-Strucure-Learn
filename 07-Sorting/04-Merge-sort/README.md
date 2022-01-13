@@ -80,6 +80,7 @@ public class MergeSort {
             }
             // 再判断两个半区的大小：
             // 注意是temp[i-l]和temp[j-l]比较，容易忘记偏移量l
+            // 记住这里是小于等于，在有些问题中等号很重要，比如剑指51：逆序对
             else if(temp[i-l].compareTo(temp[j-l])<=0){  // 左半部分所指元素 <= 右半部分所指元素
                 arr[k] = temp[i-l]; i++;
             }

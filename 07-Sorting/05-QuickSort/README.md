@@ -18,7 +18,7 @@
 | :------: | :-------: | :------: | :------: | :------: | :----: |
 | 快速排序 | O(nlogn） |  O(n^2)  | O(nlogn) | O(logn)  | 不稳定 |
 
-快排的不稳定：
+**快排的不稳定分析：**
 
 假设待排序数组: `a = [ 1, 2, 2, 3, 4, 5, 6 ];`
 
@@ -32,70 +32,81 @@
 
 
 
+**快排的复杂度分析：**
+
+在学完随机化快排和双路快排后，对快排复杂度应该有一定的分析。
+
+最初始的版本，没有随机化基准值，存在“能找到一组数据，让算法100%恶化”，即对于近乎有序的数组，其时间复杂度变为O(n^2)，这里的O(n^2)显然是最坏的情况，因为对于“能找到一组数据，让算法100%恶化”，就应该去看它的最坏情况，因为这样的数据很容易能找到，而一旦用到这些数据，算法的复杂度我们是不能忍受的。
+
+后面使用了随机化快排，这个随机化快排从某种角度上说是一种随机算法，因为其每次选定的基准值是不同的，那么分析复杂度时，是应该用最坏情况，还是期望情况。答案仍然是看最坏情况，因为仍然存在“能找到一组数据，让算法100%恶化”，即对于大量重复数据的数组，随机化快排退化成了O(n^2)。这样的数据依然很好找。
+
+再后来使用了双路快排，这时计算复杂度是应该用最坏情况，还是期望情况。答案是应该用期望情况，因为“没有一组数组，能让算法100%恶化”，理论上来讲可能会存在这样数组，但概率非常非常低，因此考虑最坏情况是没有意义的，所以此时复杂度为O(nlogn)，为期望复杂度。
+
+综上所述，考虑复杂度是最坏情况还是期望情况，因该去想考虑最坏情况有没有意义，如果有数据让最坏情况很容易出现，那么就必须用最坏情况计算，否则最坏情况就没意义，而使用期望情况
+
+
+
+
+
 ## 三、过程图示
 
-![快速排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/QuickSort.png)
+[![5TOSxA.png](https://z3.ax1x.com/2021/10/27/5TOSxA.png)](https://imgtu.com/i/5TOSxA)
 
 
 
 ## 四、实例代码
 
-```c++
+```java
 // 对arr[l...r]部分进行partition操作
 // 返回p, 使得arr[l...p-1] < arr[p] ; arr[p+1...r] > arr[p]
-template<typename T>
-int __partition(T *arr, int l, int r) {
-    T v = arr[l];  //将数组最左边的数选为比较的基准
+public class QuickSort {
 
-    // 下面要使得arr[ l+1 ... j ] < v ; arr[ j+1 ... i ) > v，一定要注意右半边的 i 是开区间，因为i是当前正在被检索的元素
-    // 初始值j =l 的好处是最开始 i = l+1 时，左半区间为[ l+1 ... l ] ，右半区间为[ l+1 ... l +1 )，均为空区间
-    // 索引 j 是指向<v部分的最后一个位置
-    int j = l;
-    for (int i = l + 1; i <= r; i++) {
-        //arr[i] > v 时，让 i++ 就可以了，相当于不用管
-        if (arr[i] < v) {
-            // j是指向<v的部分的最后一个位置，所以应该是交换arr[i]和arr[j+1]，随后j++，这样arr[i]就放到了<v的部分
-            // 再随后i++，也保证了原来的arr[j+1]仍然在>v的部分
-            // 下面两句可以合并为更优雅的写法：swap(arr[i], arr[++j]); //既完成交换，也完成+1
-            swap(arr[i], arr[j + 1]);
-            j++;
-        }
+    public static <E extends Comparable<E>> void sort(E[] arr){
+        sort(arr,0,arr.length-1);
     }
 
-    swap(arr[l], arr[j]);
-    return j;
+    public static <E extends Comparable<E>> void sort(E[] arr, int l, int r) {
+            if (l>=r) return;
 
-}
+            int p = partition(arr,l,r);  // 返回索引值
+            sort(arr,l,p-1);  // 注意分界点
+            sort(arr,p+1,r);
+    }
 
-template<typename T>
-void __QuickSort(T *arr, int l, int r) {
-    if (l >= r)
-        return;
 
-    int p = __partition(arr, l, r);  //返回索引值
-    __QuickSort(arr, l, p - 1);      //注意分界点
-    __QuickSort(arr, p + 1, r);
-}
+        private static <E extends Comparable<E>> int partition(E[] arr, int l, int  r){
+        // 指定最左端元素为基准值
+        int j=l;
+        // i指向当前索引元素，j指向小于arr[l]区域的最后一个元素，脑子里要有图
+        // 从l的下一个开始for循环，arr[i] > arr[l] 时，让 i++ 就可以了，相当于不用管
+        for (int i = l+1; i <= r; i++) {
+            // 如果当前元素小于基准值，应该交换arr[i]和arr[j+1]，随后j++，这样arr[i]就放到了<v的部分
+            if (arr[i].compareTo(arr[l])<0){
+                //先让j+1，指向小于arr[l]的区域后面一个元素，再交换
+//                swap(arr,i,j+1);
+//                j++;
 
-template<typename T>
-void QuickSort(T *arr, int n) {
-    __QuickSort(arr, 0, n - 1);
+                //或者先+1，再交换
+//                j++;
+//                swap(arr,i,j);
+
+                // 以上两种都可以合写为:
+                 swap(arr,i,++j);
+            }
+        }
+        swap(arr,l,j);
+        return j;
+    }
+
+    private static <E> void swap(E[] arr,int i,int j){
+        E t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+    }
 }
 ```
 
 
-
-文件结构：
-
-QuickSort.h  快速排序算法
-
-MergeSort.h 归并排序算法
-
-InsertionSort.h  插入排序算法
-
-SortTestHelper.h  测试函数
-
-main.cpp  主函数
 
 
 
@@ -103,20 +114,18 @@ main.cpp  主函数
 
 ### 优化一：避免递归到底
 
-```c++
-template<typename T>
-void __QuickSort(T *arr, int l, int r) {
-//    if (l >= r)
-//        return;
-    //优化一，避免递归到底
-    if (r - l <= 15) {
-        InsertionSort(arr, l, r);
+```java
+public static <E extends Comparable<E>> void sort(E[] arr, int l, int r) {
+    // if (l>=r) return;
+    // 优化一：避免递归到底
+    if (r - l <= 15){
+        InsertionSort.sort(arr,l,r);
         return;
     }
 
-    int p = __partition(arr, l, r);  //返回索引值
-    __QuickSort(arr, l, p - 1);
-    __QuickSort(arr, p + 1, r);
+    int p = partition(arr,l,r);  // 返回索引值
+    sort(arr,l,p-1);  // 注意分界点
+    sort(arr,p+1,r);
 }
 ```
 
@@ -124,49 +133,32 @@ void __QuickSort(T *arr, int l, int r) {
 
 ### 优化二：随机化快排--解决近乎有序的数组
 
-在**近乎有序的数组**中，初始的快排非常慢，因为partition操作的基数选择了最左侧的数，其在近乎有序的数组中递归时分界点大概率都是最左侧，递归树的高度就成了n，导致其变成近乎O(n^2)的复杂度，优化方法为使用随机化快排
+在**近乎有序的数组**中，初始的快排非常慢，因为前面partition操作的基数选择了最左侧的数，其在近乎有序的数组中递归时分界点大概率都是最左侧，递归树的高度就成了n（上一节的归并排序递归深度为logn），导致其变成近乎O(n^2)的复杂度。优化方法为使用**随机化快排**，即随机挑选基准值
 
 虽然最坏情况的时间复杂度仍然为O(n^2)，但是这种概率非常小（因为每次都能随机到最小的数字的概率很小），随机化快排的期望时间复杂度则是O(nlogn)
 
-优化后虽然还是没有归并快（归并使用了优化，近乎有序的数组不用归并过程），但在可以接受的范围内
+优化后虽然还是没有归并快（归并使用了优化，近乎有序的数组不用归并过程），但在可以接受的范围内。
 
-```c++
-int __partition(T *arr, int l, int r) {
+```java
+private static <E extends Comparable<E>> int partition(E[] arr, int l, int  r){
+    // 优化二：随机指定基准值
+    // nextInt函数是[0，n)随机值，所以这里应该传入r-l+1。其实传入r-l也不太影响结果，但r-l+1更符合随机抽取数组值的逻辑。
+    // 这里还有个随机操作上的小优化，即不让每次partition都创建一个Random对象，而是在最上面的sort函数中创建，然后通过函数参数依次传进partition中。限于篇幅此处略过。
 
-    //优化2：随机化快排：随机在arr[l...r]的范围中, 选择一个数值作为标定点pivot
-    swap(arr[l],arr[rand()%(r-l+1)+l]);
+    int p = l + (new Random()).nextInt(r-l+1);
+    swap(arr,l,p);
 
-    T v = arr[l]; 
-
-    int j = l;
-    for (int i = l + 1; i <= r; i++) {
-        if (arr[i] < v) {
-            swap(arr[i], arr[j + 1]);
-            j++;
+    int j=l;
+    // i指向当前索引元素，j指向小于arr[l]区域的最后一个元素，脑子里要有图
+    // 从l的下一个开始for循环，arr[i] > arr[l] 时，让 i++ 就可以了，相当于不用管
+    for (int i = l+1; i <= r; i++) {
+        // 如果当前元素小于基准值，应该交换arr[i]和arr[j+1]，随后j++，这样arr[i]就放到了<v的部分
+        if (arr[i].compareTo(arr[l])<0){
+            swap(arr,i,++j);
         }
     }
-
-    swap(arr[l], arr[j]);
+    swap(arr,l,j);
     return j;
-}
-
-template<typename T>
-void __QuickSort(T *arr, int l, int r) {
-    //优化一，避免递归到底
-    if (r - l <= 15) {
-        InsertionSort(arr, l, r);
-        return;
-    }
-
-    int p = __partition(arr, l, r); 
-    __QuickSort(arr, l, p - 1);
-    __QuickSort(arr, p + 1, r);
-}
-
-template<typename T>
-void QuickSort(T *arr, int n) {
-    srand(time(NULL));   //随机化
-    __QuickSort(arr, 0, n - 1);
 }
 ```
 
@@ -176,57 +168,34 @@ void QuickSort(T *arr, int n) {
 
 即将**<v**和**>v**由之前的放在数组的左端，改为放到数组的两端，需要使用两个索引值（i、j）用来遍历我们的序列，将 **<=v** 的元素放在索引 i 所指向位置的左边，而将 **>=v** 的元素放在索引 j 所指向位置的右边，平衡左右两边子数组（说白了就是把=v的元素分散开来放）
 
-![双路快排示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/QuickSort2Ways.png)
+[![5TLx8H.png](https://z3.ax1x.com/2021/10/27/5TLx8H.png)](https://imgtu.com/i/5TLx8H)
 
-```c++
-// 双路快排返回p, 使得arr[l...p-1] <= arr[p] ; arr[p+1...r] >= arr[p]
-// 即把等于标定值的数尽量均匀分布在两个部分，不会造成不平衡的情况
-template<typename T>
-int __partition2(T *arr, int l, int r) {
-    swap(arr[l],arr[rand()%(r-l+1)+l]);
-    T v = arr[l];
+```java
+private static <E extends Comparable<E>> int partition(E[] arr, int l, int  r){
+    int p = l + (new Random()).nextInt(r-l+1);
+    swap(arr,l,p);
 
-    // 使得arr[l+1...i) <= v; arr(j...r] >= v
+    // 优化三：双路快速排序
+    // 使得arr[l+1...i) <= v; arr(j...r] >= v，把等于基准值的数尽量均匀分布在两个部分，不会造成不平衡的情况
     // 定义两个索引分别指向：<v区域的下一位 和 >v区域的前一位
-    // 这样初始化定义i，j，两个初始区间就都是空的
-    int i=l+1,j=r;
-    while(1){
-        // 越界问题：i是不能比r大的，而j是不能小于l+1的，因为l是标定点
-        // while判定中arr[i]不能是<=v，arr[j]不能是>=v，因为其中任意一个判定=成功，都会把大量相同数据放置到一个半区，
-        // 仍然会造成不平衡的问题，而不是等于也很好理解，i指向这个>=v的数，j指向这个<=v的数，然后交换他们，与v相等的数交换到了另一边，
-        // 随后i++，j--，跳过这个交换过来的数，不管他等不等于v，进行后面元素的判定
-        while(i<=r && arr[i]<v) i++;
-        while(j>=l+1 && arr[j]>v) j--;
-        if(i>j) break;
-        swap(arr[i],arr[j]);
+    int i =l+1, j=r;
+    while (true){
+        // 下面两个while判定中arr[i]不能包含 = arr[l]，因为其中任意一个判定=成功，都会把大量相同数据放置到一个半区，仍然会造成不平衡的问题
+        // 即只要不碰到>=arr[l],i就+1，不碰到<=arr[l]，j就-1
+        // 当i指向这个>=arr[l]的数，j指向这个<=arr[l]的数，然后交换他们，如果是与arr[l]相等的数交换到了另一边，这样才能尽量均匀分布在两侧
+        while (i<=j && arr[i].compareTo(arr[l])<0) i++;
+        while (i<=j && arr[j].compareTo(arr[l])>0) j--;
+        // 如果i>=j，则是越界，停止循环
+        if (i>=j) break;
+        swap(arr,i,j);
+        // 交换完还是要继续移动双指针
         i++;
         j--;
     }
-    // 遍历结束后，i指向从前往后看第一个>=v的位置，j指向从后往前看，最后一个<=v的位置，
-    // 现在标定点是在<=v这一端，所以交换arr[l]和arr[j]，它们都是<=v区域的值
-    swap(arr[l],arr[j]);
-
+    // 务必注意！遍历结束后，i指向从前往后看第一个>=arr[l]的位置，j指向从后往前看，最后一个<=arr[l]的位置，
+    // 现在标定点是在<=arr[l]这一端，所以交换arr[l]和arr[j]，它们都是<=v区域的值，而不是交换l和i，否则会排序失败
+    swap(arr,l,j);
     return j;
-}
-
-
-template<typename T>
-void __QuickSort2(T *arr, int l, int r) {
-    if (r - l <= 15) {
-        InsertionSort(arr, l, r);
-        return;
-    }
-
-    int p = __partition2(arr, l, r);
-    __QuickSort2(arr, l, p - 1);
-    __QuickSort2(arr, p + 1, r);
-}
-
-
-template<typename T>
-void QuickSort2(T *arr, int n) {
-    srand(time(NULL));
-    __QuickSort2(arr, 0, n - 1);
 }
 ```
 
@@ -236,9 +205,9 @@ void QuickSort2(T *arr, int n) {
 
 对于包含有大量重复数据的数组, 三路快排有巨大的优势,对于一般性的随机数组和近乎有序的数组, 三路快排的效率虽然不是最优的, 但是是在非常可以接受的范围里。因此, 在一些语言中, 三路快排是默认的语言库函数中使用的排序算法。比如Java
 
+记住下图最上面的横条。
 
-
-![三路快排示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/QuickSort3Ways.png)
+[![5TLvPe.png](https://z3.ax1x.com/2021/10/27/5TLvPe.png)](https://imgtu.com/i/5TLvPe)
 
 ```c++
 //将arr[l...r]分为<v;==v;>v 三部分

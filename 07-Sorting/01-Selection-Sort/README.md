@@ -89,6 +89,8 @@ public class SelectionSort {
 
 ### 改进二：双指针法--每一轮中可以同时找到当前未处理元素的最大值和最小值
 
+了解即可
+
 来源：https://github.com/liuyubobobo/Play-with-Algorithms/blob/master/02-Sorting-Basic/Course%20Code%20(Java)/Optional-01-Optimized-Selection-Sort/src/bobo/algo/SelectionSort2.java
 
 ```c++
