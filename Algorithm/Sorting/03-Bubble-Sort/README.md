@@ -20,7 +20,7 @@
 
 ## 三、过程图示
 
-[![5TLz2d.gif](https://z3.ax1x.com/2021/10/27/5TLz2d.gif)](https://imgtu.com/i/5TLz2d)
+![bubbleSort](https://jswanyu-1309100582.cos.ap-shanghai.myqcloud.com/picgo/bubbleSort%E7%A4%BA%E6%84%8F%E5%9B%BE.gif)
 
 
 

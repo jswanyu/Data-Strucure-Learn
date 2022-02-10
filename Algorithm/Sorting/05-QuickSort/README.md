@@ -50,7 +50,7 @@
 
 ## 三、过程图示
 
-[![5TOSxA.png](https://z3.ax1x.com/2021/10/27/5TOSxA.png)](https://imgtu.com/i/5TOSxA)
+![QuickSort](https://jswanyu-1309100582.cos.ap-shanghai.myqcloud.com/picgo/QuickSort.png)
 
 
 
@@ -168,7 +168,7 @@ private static <E extends Comparable<E>> int partition(E[] arr, int l, int  r){
 
 即将**<v**和**>v**由之前的放在数组的左端，改为放到数组的两端，需要使用两个索引值（i、j）用来遍历我们的序列，将 **<=v** 的元素放在索引 i 所指向位置的左边，而将 **>=v** 的元素放在索引 j 所指向位置的右边，平衡左右两边子数组（说白了就是把=v的元素分散开来放）
 
-[![5TLx8H.png](https://z3.ax1x.com/2021/10/27/5TLx8H.png)](https://imgtu.com/i/5TLx8H)
+![QuickSort2Ways](https://jswanyu-1309100582.cos.ap-shanghai.myqcloud.com/picgo/QuickSort2Ways.png)
 
 ```java
 private static <E extends Comparable<E>> int partition(E[] arr, int l, int  r){
@@ -205,9 +205,9 @@ private static <E extends Comparable<E>> int partition(E[] arr, int l, int  r){
 
 对于包含有大量重复数据的数组, 三路快排有巨大的优势,对于一般性的随机数组和近乎有序的数组, 三路快排的效率虽然不是最优的, 但是是在非常可以接受的范围里。因此, 在一些语言中, 三路快排是默认的语言库函数中使用的排序算法。比如Java
 
-记住下图最上面的横条。
+为了方便记忆，记住下图最上面的横条结构。
 
-[![5TLvPe.png](https://z3.ax1x.com/2021/10/27/5TLvPe.png)](https://imgtu.com/i/5TLvPe)
+![QuickSort3Ways](https://jswanyu-1309100582.cos.ap-shanghai.myqcloud.com/picgo/QuickSort3Ways.png)
 
 ```c++
 //将arr[l...r]分为<v;==v;>v 三部分
