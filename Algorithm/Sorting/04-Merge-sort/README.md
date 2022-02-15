@@ -35,7 +35,17 @@
 
 ## 三、过程图示
 
+归并过程：不断比较temp[i]和temp[j]的大小，找到合适的位置放到原数组中
+
+![image-20220213153723211](https://jswanyu-1309100582.cos.ap-shanghai.myqcloud.com/picgo/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%9B%BE.png)
+
+
+
+动图演示：
+
 ![mergeSort](https://jswanyu-1309100582.cos.ap-shanghai.myqcloud.com/picgo/mergeSort%E7%A4%BA%E6%84%8F%E5%9B%BE.gif)
+
+
 
 
 
@@ -64,6 +74,7 @@ public class MergeSort {
     // 合并两个有序的区间，arr[l,mid] 和arr[mid+1,r]
     private static <E extends Comparable<E>> void merge(E[] arr, int l, int mid, int r){
         // copyOfRange方法是不包括右端点的，所以要r+1。
+        // 即写copyOfRange(arr,0,5)它是不复制arr[5]这个数的，要写成copyOfRange(arr,0,6)
         // 这里注意arr是从l开始索引的，但temp是从0开始索引的，所以相比于arr，temp有一个l的偏移量
         E[] temp = Arrays.copyOfRange(arr,l,r+1);
         //定义两个指针分别指向左右半区的首位置
@@ -100,6 +111,8 @@ public class MergeSort {
 
 ### 优化一：对于小规模数组, 使用插入排序，避免递归到底
 
+数组元素较少且是有序的情况，插入排序复杂度可能到O(n)级别
+
 ```c++
 public class MergeSort {    
 	public static <E extends Comparable<E>> void sort(E[] arr, int l, int r){
@@ -123,7 +136,7 @@ public class MergeSort {
 
 ### 优化二：对于左半区和右半区整体大小已经确定的情况可以不用再进行递归
 
-对于arr[mid] <= arr[mid+1]的情况,不进行merge ，因为归并过程保证了l~mid是有序的，mid+1~r也是有序的，arr[mid] <= arr[mid+1]，则不用排序，这对于近乎有序的数组非常有效,但是对于一般情况,有一定的性能损失
+对于arr[mid] <= arr[mid+1]的情况,不进行merge ，因为归并过程保证了l~mid是有序的，mid+1~r也是有序的，arr[mid] <= arr[mid+1]，则不用排序，这对于近乎有序的数组非常有效，会变成O(n)级别的算法。但是对于一般情况，有一定的性能损失
 
 ```c++
 public class MergeSort {    
@@ -157,7 +170,7 @@ public class MergeSort {
 ```java
 public class MergeSort {
     public static <E extends Comparable<E>> void sort2(E[] arr){
-        //在一开始开辟数组空间，而不是在每次的merge中开辟空间。递归时将数组传下去
+        //在一开始开辟数组空间，而不是在每次的merge中开辟空间。递归时将数组传下去，在合并过程中也可以不用考虑偏移量
         E[] temp = Arrays.copyOf(arr,arr.length);
         sort2(arr,0,arr.length-1, temp);
     }

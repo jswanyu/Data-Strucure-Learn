@@ -34,16 +34,15 @@
 ## 四、实例代码
 
 ```java
-public class InsertionSort {
-    public static <E extends Comparable<E>> void sort(E[] arr){
-        for (int i = 0; i < arr.length; i++) {
-            E t = arr[i];  //复制一份外层循环当前轮次的元素
-            int j;         //变量j保存元素e应该所在的位置，单独初始化是因为for循环后面还要用到
-            // 务必注意是当前轮次的值arr[i]即t与arr[j-1]比较，而不是arr[j]，并且j-1是可以=0d
-            for (j = i; j-1 >=0 && t.compareTo(arr[j-1])<0; j--)
-                arr[j] = arr[j-1]; //比前一个元素大，那就让前一个元素后移，不用让arr[j]与arr[j-1]一直交换
-            arr[j] = t;    //此时j就是合适的位置，将开始的arr[i]赋给它
-        }
+public static <E extends Comparable<E>> void sort(E[] arr){
+    for (int i = 0; i < arr.length; i++) {
+        E e = arr[i];  //复制一份外层循环当前轮次的元素
+        int j;         //变量j保存元素e应该所在的位置，单独初始化是因为for循环后面还要用到
+        // 注意是当前轮次的值arr[i]即e与arr[j-1]比较，而不是arr[j]，当前轮次的arr[j]就是e，自然要跟前一个数字相比
+        // 这轮for循环的功能：1、找到当前轮次的元素应该放的位置 2、将大的元素后移
+        for (j = i; j-1 >=0 && e.compareTo(arr[j-1])<0; j--)
+            arr[j] = arr[j-1]; //比前一个元素大，那就让前一个元素后移，不用让arr[j]与arr[j-1]一直交换
+        arr[j] = e;    //此时j就是合适的位置，将当前轮次的e赋给它
     }
 }
 ```

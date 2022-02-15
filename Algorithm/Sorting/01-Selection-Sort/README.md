@@ -34,10 +34,11 @@ public class SelectionSort {
         for (int i = 0; i < arr.length; i++) {
             //寻找[i,n)区间里的最小值
             int minIndex = i;    //最小值的索引为i
-            for (int j = i+1; j < arr.length; j++)   //从i的下一个数开始
+            for (int j = i+1; j < arr.length; j++){   //从i的下一个数开始
                 //如果找到一个比第i个数小的数，就把他所在的索引记为当前轮次的最小值
                 if (arr[j].compareTo(arr[minIndex])<0) 
                     minIndex = j;
+            }
             swap(arr,i,minIndex);  //将最小值交换到第i个数处
         }
     }

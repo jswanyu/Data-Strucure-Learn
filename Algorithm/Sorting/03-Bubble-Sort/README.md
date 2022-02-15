@@ -50,7 +50,11 @@ public class BubbleSort {
 
 ### 改进一：添加标志位，如果某次没有发生交换，则停止排序
 
-适合本身就有序的序列
+适合本身就有序的序列，比如 2  3   5   8   7，其实只要交换一次，第二次循环开始就不用交换了，所以后续的交换可以免去。
+
+对于完全有序的数组，它就成了O(n)复杂度
+
+对于完全随机的这种改进并不很显著，因为在较坏情况下，改进过的冒泡排序过程跟未改进过的差不多。
 
 ```c++
 public class BubbleSort {
@@ -74,42 +78,25 @@ public class BubbleSort {
 }
 ```
 
-不过，这种改进并不很显著，因为在最坏情况下，改进过的冒泡排序过程跟未改进过的差不多。
-
 
 
 ### 改进二：减少内层循环比较的元素
 
-对于每次循环已经冒出去的值，可以不用去考虑它，在内层循环中记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑
-
-代码来源：https://github.com/liuyubobobo/Play-with-Algorithms/blob/master/02-Sorting-Basic/Course%20Code%20(Java)/Optional-02-Bubble-Sort/src/bobo/algo/BubbleSort2.java
+对于每次循环已经冒出去的值，可以不用去考虑它，在内层循环中记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑。比如  3  7  1  2  8  9，第一轮的冒泡会变为  3  1   2   7   8   9 ，最后一次交换位置就是在交换完7之后，那么此后的元素均不用考虑了，都已经放到了合适的位置
 
 ```java
 public class BubbleSort {
     
 public static void sort(Comparable[] arr){
-
-        int n = arr.length;
-        int newn; // 使用newn进行优化
-		
-        //可以改成for循环
-        do{
-            newn = 0;
-            for( int i = 1 ; i < n ; i ++ )
-                if( arr[i-1].compareTo(arr[i]) > 0 ){
-                    swap( arr , i-1 , i );
-
-                    // 记录最后一次的交换位置,在此之后的元素在下一轮扫描中均不考虑
-                    newn = i;
-                }
-            n = newn;
-        }while(newn > 0);
-    }
-
-    private static void swap(Object[] arr, int i, int j) {
-        Object t = arr[i];
-        arr[i] = arr[j];
-        arr[j] = t;
+    for (int i = 0; i + 1 < arr.length; ) {
+        int lastSwappedIndex = 0;
+        for (int j = 0; j < arr.length-1-i; j++) {
+            if (arr[j].compareTo(arr[j+1])>0){
+                swap(arr,j,j+1);
+                lastSwappedIndex = j+1;  //最后一次交换位置
+            }
+        }
+        i = arr.length - lastSwappedIndex;   // 还要交换的元素数量
     }
 }
 ```

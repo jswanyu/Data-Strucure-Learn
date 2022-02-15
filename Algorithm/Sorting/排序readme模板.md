@@ -16,7 +16,7 @@
 
 ## 三、过程图示
 
-![插入排序示意图](https://github.com/wanyu416/Data-Strucure/blob/main/src/bubbleSort.gif)
+
 
 
 
