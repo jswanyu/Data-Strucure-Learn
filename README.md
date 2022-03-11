@@ -10,3 +10,25 @@
 
 MOOC  算法与数据结构体系课  liuyubobo
 
+
+
+
+
+部分补充：
+
+交换a和b，有两种方法：
+
+```java
+// 法一：
+int temp = a;
+a = b
+b = temp;
+
+// 法二：
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+```
+
+
+
