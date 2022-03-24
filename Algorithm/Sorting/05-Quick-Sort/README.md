@@ -191,6 +191,7 @@ private static <E extends Comparable<E>> int partition(E[] arr, int l, int  r){
     // 优化三：双路快速排序
     // 使得arr[l+1...i) <= v; arr(j...r] >= v，把等于基准值的数尽量均匀分布在两个部分，不会造成不平衡的情况
     // 定义两个索引分别指向：<v区域的下一位 和 >v区域的前一位
+  i
     int i =l+1, j=r;
     while (true){
         // 下面两个while判定中arr[i]不能包含 = arr[l]，因为其中任意一个判定=成功，都会把大量相同数据放置到一个半区，仍然会造成不平衡的问题
