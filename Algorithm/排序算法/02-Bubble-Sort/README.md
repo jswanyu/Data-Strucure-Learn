@@ -50,9 +50,9 @@ public class BubbleSort {
 
 ### 改进一：添加标志位，如果某次没有发生交换，则停止排序
 
-适合本身就有序的序列，比如 2  3   5   8   7，其实只要交换一次，第二次循环开始就不用交换了，所以后续的交换可以免去。
+适合本身就有序的序列，比如 2  3   5   7   8，扫描一次剩下的元素发现没有元素需要交换，说明此时数组已经有序了，程序提前终止
 
-对于完全有序的数组，它就成了O(n)复杂度
+对于完全有序的数组，它就成了O(n)复杂度（如果是原始的写法对于完全有序的数组还是O(n^2)）
 
 对于完全随机的这种改进并不很显著，因为在较坏情况下，改进过的冒泡排序过程跟未改进过的差不多。
 
@@ -61,16 +61,16 @@ public class BubbleSort {
     
     public static <E extends Comparable<E>> void sort(E[] arr){
         //设置一个标志，如果这一趟发生了交换，则为true，否则为false。如果有一趟没有发生交换，说明排序已经完成
-        boolean flag = true;  //第一次判断时标志位为true
+        boolean sorted = true;  //第一次判断时标志位为true
         //外层循环需要flag为true
-        for (int i = 0; i < arr.length-1 && flag; i++) {
+        for (int i = 0; i < arr.length-1 && sorted; i++) {
             //每次的内层循环将标志位设为假，否则没意义
-            flag = false;
+            sorted = false;
             //内层循环会执行到底
             for (int j = 0; j < arr.length-1-i; j++) {
                 if (arr[j].compareTo(arr[j+1])>0){
                     swap(arr,j,j+1);
-                    flag = true;
+                    sorted = true;
                 }
             }
         }
@@ -87,7 +87,7 @@ public class BubbleSort {
 ```java
 public class BubbleSort {
     
-public static void sort(Comparable[] arr){
+	public static void sort(Comparable[] arr){
     for (int i = 0; i + 1 < arr.length; ) {
         int lastSwappedIndex = 0;
         for (int j = 0; j < arr.length-1-i; j++) {
