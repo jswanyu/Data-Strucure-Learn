@@ -311,13 +311,13 @@ public class LinkedListMap<K, V> implements Map<K, V> {
 
 集合主要操作的平均时间复杂度分析
 
-|              | 链表 | BST     |
-| ------------ | ---- | ------- |
-| 添加add      | O(n) | O(logn) |
-| 删除remove   | O(n) | O(logn) |
-| 修改set      | O(n) | O(logn) |
-| 查找get      | O(n) | O(logn) |
-| 查找contains | O(n) | O(logn) |
+|              | 链表 | BST                 |
+| ------------ | ---- | ------------------- |
+| 添加add      | O(n) | O(logn)，最差是O(n) |
+| 删除remove   | O(n) | O(logn)，最差是O(n) |
+| 修改set      | O(n) | O(logn)，最差是O(n) |
+| 查找get      | O(n) | O(logn)，最差是O(n) |
+| 查找contains | O(n) | O(logn)，最差是O(n) |
 
 二分搜索树最差情况同样是O(n)级别
 
