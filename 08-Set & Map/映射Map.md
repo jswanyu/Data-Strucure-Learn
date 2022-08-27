@@ -28,6 +28,8 @@ public interface Map<K, V> {
 
 和Set实现的不同之处在于，之前树的节点上只有一个value，现在Map需要两个值，key和value，因此在构造、增删改查等操作上，需要考虑怎么用这两个值
 
+也可以基于AVL树实现，平衡性更好，当然了树的结构里也要有键值对
+
 ```Java
 public class BSTMap<K extends Comparable<K>, V> implements Map<K, V> {
     private class Node{

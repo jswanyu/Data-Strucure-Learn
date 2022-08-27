@@ -11,13 +11,5 @@
 
 
 
-**参考资料：**
-
-MOOC-算法与数据结构体系课-liuyubobo
-
-MOOC-玩转算法面试-liuyubobo
-
-
-
 
 

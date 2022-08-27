@@ -24,6 +24,8 @@ public interface Set<E> {
 
 前面实现的二分搜索树（不带重复元素）其实天然的具备集合的功能，可以基于二分搜索树实现集合
 
+也可以基于AVL树实现，平衡性更好
+
 ```Java
 // 基于二分搜索树的集合类
 public class BSTSet <E extends  Comparable<E>> implements Set<E>{
